@@ -1,21 +1,22 @@
 import streamlit as st
 import pandas as pd
-from pymongo import MongoClient
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 from datetime import datetime
 import pytz
 
+# --- Database Connection ---
 # Securely retrieve the connection string from st.secrets
 # This is the correct way to handle sensitive information on Streamlit Cloud
 try:
-    uri = st.secrets["mongo"]["uri"]
+    uri = st.secrets["MONGO_URI"]
 except KeyError:
     st.error("MongoDB URI not found in `.streamlit/secrets.toml`. Please add it to deploy to Streamlit Cloud.")
     st.stop()
 
-
 # Create a new client and connect to the server
 try:
-    client = MongoClient(uri)
+    client = MongoClient(uri, server_api=ServerApi('1'))
     db = client["oantracker"]
     collection = db["expense"]
     
@@ -24,11 +25,12 @@ try:
     st.sidebar.success("✅ Database connection successful!")
 
 except Exception as e:
-    st.error(f"Failed to connect to MongoDB. Please check your URI in `.streamlit/secrets.toml`")
+    st.error("Failed to connect to MongoDB. Please check your URI in `.streamlit/secrets.toml`")
     st.exception(e)
     # Stop the app from running further if the connection fails
     st.stop()
-
+    
+# --- End Database Connection ---
 
 # Load data
 raw_data = list(collection.find())
