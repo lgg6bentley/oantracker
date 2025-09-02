@@ -9,7 +9,7 @@ click==8.2.1
 colorama==0.4.6
 Django==5.2.5
 dnspython==2.7.0
-firebase-admin
+firebase-admin==6.4.0
 gitdb==4.0.12
 GitPython==3.1.45
 idna==3.10
@@ -22,7 +22,7 @@ numpy==2.3.2
 packaging==25.0
 pandas==2.3.2
 pillow==11.3.0
-protobuf==6.32.0
+protobuf==3.20.3
 pyarrow==21.0.0
 pydeck==0.9.1
 pymongo==4.14.1
