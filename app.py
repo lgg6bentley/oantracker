@@ -3,12 +3,10 @@ import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# Initialize Firebase using Streamlit Secrets
-try:
+# Initialize Firebase only if it hasn't been initialized
+if not firebase_admin._apps:
     cred = credentials.Certificate(json.loads(st.secrets["firebase_key"]))
     firebase_admin.initialize_app(cred)
-except ValueError:
-    st.info("Firebase app already initialized.")
 
 # Get a reference to the Firestore database
 db = firestore.client()
@@ -34,21 +32,21 @@ def load_data(collection_name):
 
 # Main Streamlit app
 def main():
-    st.title("Firestore Data Loader")
+    st.title("📊 Firestore Data Loader")
 
     # Input for collection name
     collection_name = st.text_input("Enter Firestore collection name:", "your_collection_name")
 
     if collection_name:
-        # Simulate a small collection for demonstration
+        # Optional: Add a dummy document for testing
         dummy_collection = db.collection(collection_name)
         dummy_data = {"name": "Test User", "score": 100, "date": firestore.SERVER_TIMESTAMP}
         dummy_collection.add(dummy_data)
 
         try:
-            data_df = load_data(collection_name)
-            st.write("Data loaded successfully:")
-            st.dataframe(data_df)
+            data = load_data(collection_name)
+            st.success("Data loaded successfully:")
+            st.dataframe(data)
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
