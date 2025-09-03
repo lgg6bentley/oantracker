@@ -1,0 +1,14 @@
+# Firebase credentials
+firebase_keys/
+*.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.env
+
+# Streamlit config
+.streamlit/secrets.toml
